@@ -1,35 +1,43 @@
+from flask import Flask, request, render_template
+import openai
 import os
 
-import openai
-from flask import Flask, redirect, render_template, request, url_for
-
 app = Flask(__name__)
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
+# Load your OpenAI API key from an environment variable
+openai.api_key = os.environ["OPENAI_API_KEY"]
 
-@app.route("/", methods=("GET", "POST"))
+# Define the home page route
+@app.route("/")
 def index():
-    if request.method == "POST":
-        animal = request.form["animal"]
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=generate_prompt(animal),
-            temperature=0.6,
-        )
-        return redirect(url_for("index", result=response.choices[0].text))
+    return render_template("index.html")
 
-    result = request.args.get("result")
-    return render_template("index.html", result=result)
+# Define the route for handling file uploads
+@app.route("/upload", methods=["POST"])
+def upload():
+    file = request.files["audio"]
+    filename = file.filename
+    filepath = os.path.join("uploads", filename)
+    file.save(filepath)
 
+    # with open(filepath, "rb") as f:
+    #     audio = f.read()
 
-def generate_prompt(animal):
-    return """Suggest three names for an animal that is a superhero.
+    audio = open(filepath, "rb")
+    transcript = openai.Audio.transcribe(model="whisper-1", file=audio, result_format="text", prompt="In English, transcribe the recording on AI, consciousness and humanity")
 
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: {}
-Names:""".format(
-        animal.capitalize()
-    )
+    print(transcript)
+
+    text = transcript.text
+
+    print(text)
+
+    # Save the transcribed text to a file
+    with open(f"transcripts/{filename}.txt", "w") as f:
+        f.write(text)
+
+    # Return a download link to the transcribed text file
+    return f'<a href="transcripts/{filename}" download>Download Transcription</a>'
+
+if __name__ == "__main__":
+    app.run(debug=True)
