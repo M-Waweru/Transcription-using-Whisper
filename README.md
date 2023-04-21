@@ -1,6 +1,6 @@
-# OpenAI API Quickstart - Python example app
+# Transcription Using Whisper
 
-This is an example pet name generator app used in the OpenAI API [quickstart tutorial](https://beta.openai.com/docs/quickstart). It uses the [Flask](https://flask.palletsprojects.com/en/2.0.x/) web framework. Check out the tutorial or follow the instructions below to get set up.
+This is a test application to transcribe audio to text using Whisper, an OpenAI model. You can learn more about Whisper [here](https://platform.openai.com/docs/guides/speech-to-text) It uses the [Flask](https://flask.palletsprojects.com/en/2.0.x/) web framework. Check out the tutorial or follow the instructions below to get set up.
 
 ## Setup
 
@@ -11,7 +11,7 @@ This is an example pet name generator app used in the OpenAI API [quickstart tut
 3. Navigate into the project directory:
 
    ```bash
-   $ cd openai-quickstart-python
+   $ cd Transcription-using-Whisper
    ```
 
 4. Create a new virtual environment:
@@ -41,4 +41,4 @@ This is an example pet name generator app used in the OpenAI API [quickstart tut
    $ flask run
    ```
 
-You should now be able to access the app at [http://localhost:5000](http://localhost:5000)! For the full context behind this example app, check out the [tutorial](https://beta.openai.com/docs/quickstart).
+You should now be able to access the app at [http://localhost:5000](http://localhost:5000)!
